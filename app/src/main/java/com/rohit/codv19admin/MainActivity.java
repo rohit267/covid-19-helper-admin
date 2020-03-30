@@ -101,5 +101,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,AdminActivity.class);
         intent.putExtra("currentUser",currentUser);
         startActivity(intent);
+        finish();
     }
 }
