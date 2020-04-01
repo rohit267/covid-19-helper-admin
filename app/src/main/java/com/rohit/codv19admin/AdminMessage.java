@@ -5,13 +5,17 @@ public class AdminMessage {
     private String desc;
     private String image;
 
+
+
+    private String title;
     public AdminMessage() {
 
     }
 
-    public AdminMessage(String desc, String image) {
+    public AdminMessage(String desc, String image, String title) {
         this.desc = desc;
         this.image = image;
+        this.title=title;
     }
 
 
@@ -31,6 +35,13 @@ public class AdminMessage {
         this.image = image;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 
 }

@@ -36,13 +36,13 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.io.File;
 
 public class AdminActivity extends AppCompatActivity {
-    EditText etDesc;
+    EditText etDesc, etTitle;
     ImageView chooseImg, choosenImg;
     Button btPost;
     boolean per = false;
     ImageCompression imageCompression;
     Bitmap myBitmap;
-    String desc;
+    String desc, title;
     View contextView;
     private StorageReference mStorageRef;
     String downloadUrl=null;
@@ -57,6 +57,7 @@ public class AdminActivity extends AppCompatActivity {
         alertDialog= new SpotsDialog.Builder().setContext(this).build();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         etDesc = findViewById(R.id.description);
+        etTitle = findViewById(R.id.et_title);
         chooseImg = findViewById(R.id.imageView2);
         choosenImg = findViewById(R.id.img_selected);
         btPost = findViewById(R.id.bt_post);
@@ -125,8 +126,8 @@ public class AdminActivity extends AppCompatActivity {
 
     private void validateDesc() {
         desc=etDesc.getText().toString();
-        if((desc!=null && desc.length()>0) || ( myBitmap!=null && myBitmap.getByteCount()>0)) {
-//            Snackbar.make(contextView, "Valid", Snackbar.LENGTH_SHORT).show();
+        title=etTitle.getText().toString();
+        if((desc!=null && desc.length()>0) && ( myBitmap!=null && myBitmap.getByteCount()>0) && title.length()> 0) {
             alertDialog.setMessage("Uploading...");
             alertDialog.show();
             if(myBitmap!=null){
@@ -137,7 +138,7 @@ public class AdminActivity extends AppCompatActivity {
             }
         }
         else{
-            Snackbar.make(contextView, "Both fields cannot be empty", Snackbar.LENGTH_SHORT)
+            Snackbar.make(contextView, "Enter title, message and choose photo", Snackbar.LENGTH_SHORT)
                     .show();
         }
     }
@@ -154,7 +155,7 @@ public class AdminActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
-        AdminMessage adminMessage = new AdminMessage(desc,address);
+        AdminMessage adminMessage = new AdminMessage(desc,address,title);
 
         myRef.child("adminMessage").child(String.valueOf(System.currentTimeMillis())).setValue(adminMessage);
 
@@ -183,6 +184,8 @@ public class AdminActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
+                        alertDialog.dismiss();
+                        Log.i("FAILED",exception.getMessage());
                         Snackbar.make(contextView, "Failed to upload: "+exception.toString(), Snackbar.LENGTH_SHORT).show();
                     }
                 });
