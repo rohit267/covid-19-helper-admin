@@ -127,7 +127,7 @@ public class AdminActivity extends AppCompatActivity {
     private void validateDesc() {
         desc=etDesc.getText().toString();
         title=etTitle.getText().toString();
-        if((desc!=null && desc.length()>0) && ( myBitmap!=null && myBitmap.getByteCount()>0) && title.length()> 0) {
+        if((desc!=null && desc.length()>0)  && title.length()> 0) {
             alertDialog.setMessage("Uploading...");
             alertDialog.show();
             if(myBitmap!=null){
@@ -138,7 +138,7 @@ public class AdminActivity extends AppCompatActivity {
             }
         }
         else{
-            Snackbar.make(contextView, "Enter title, message and choose photo", Snackbar.LENGTH_SHORT)
+            Snackbar.make(contextView, "Both fields cannot be empty, title and message is compulsory ", Snackbar.LENGTH_SHORT)
                     .show();
         }
     }
